@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container">
+    <form th:action="@{/student/save}" th:object="${studentDto}" method="post" class="form-control">
+
+        <input type="hidden" th:field="*{studentId}"/>
+        <!----------------------------------------------------------------->
+        Name: <input type="text" th:field="*{studentName}"/><br><br>
+<!--        Age: <input type="text" th:field="*{age}"/><br><br>-->
+
+        Department: <select th:field="*{departmentDto.departmentId}">
+        <option th:each="department : ${departmentListDto}"
+                th:value="${department.departmentId}"
+                th:text="${department.departmentCode}"
+                th:selected="${department.departmentId==studentDto.departmentDto.departmentId}">
+        </option>
+    </select><br><br>
+
+        Subject List: <select th:field="*{subjectIdList}" multiple>
+        <option th:each="subject : ${subjectListDto}"
+                th:value="${subject.subjectId}"
+                th:text="${subject.subjectName}">
+        </option>
+    </select><br><br>
+
+        Gender:
+        <th:block th:each="gender : ${genderList}">
+            <input type="radio" th:field="*{gender}" th:value="${gender}">
+            <label th:text="${gender}"></label>
+        </th:block>
+        <br><br>
+
+        <!----------------------------------------------------------------->
+        <button th:if="${studentDto.studentId==0}" class="btn badge-primary" type="submit">Save</button>
+        <button th:Unless="${studentDto.studentId==0}" class="btn badge-primary" type="submit">Update</button>
+    </form>
+</div>
+</body>
+</html>
